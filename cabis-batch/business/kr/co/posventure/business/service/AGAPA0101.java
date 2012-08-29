@@ -62,7 +62,7 @@ public class AGAPA0101 extends AbstractSqlQueryService{
 	private List<PayReqModel> validationAndConvertPayReqModelExcelList(List<Excel> list) {
 		List<PayReqModel> list2 = new ArrayList<PayReqModel>();
 		for (Excel excel : list) {
-			PayReqModel payReqModel  = new PayReqModel();
+			PayReqModel payReqModel  = new PayReqModel(excel);
 			list2.add(payReqModel);
         }
 		return list2;

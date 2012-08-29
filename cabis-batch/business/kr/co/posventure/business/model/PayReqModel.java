@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class PayReqModel {
-	String pass;//
+	public PayReqModel(Excel excel) {
+    }
 }

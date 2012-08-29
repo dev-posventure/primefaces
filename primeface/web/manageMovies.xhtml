@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="template.xhtml">
+	
+	<ui:define name="content">
+	
+		<h:form prependId="false">
+			<p:panel header="Search Movies">
+				<h:panelGrid columns="3">
+					<h:outputText value="Title: " />
+					<p:autoComplete value="#{manageMovies.title}" completeMethod="#{manageMovies.getMoviesByTitle}"/>
+					<p:commandButton value="Search" actionListener="#{manageMovies.search}"/>
+				</h:panelGrid>
+			</p:panel>
+			
+		
+            <p:dataTable id="movies"  var="movie" value="#{manageMovies.movies}" rows="5" paginator="true" 
+                         selection="#{manageMovies.selectedMovies}" selectionMode="multiple">
+                
+				<p:column sortBy="#{movie.title}" filterBy="#{movie.title}">
+					<f:facet name="header">
+						<h:outputText value="Title" />
+					</f:facet>
+					<h:outputText value="#{movie.title}"></h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Format" />
+					</f:facet>
+					<h:outputText value="#{movie.format}"></h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Discs" />
+					</f:facet>
+					<h:outputText value="#{movie.discs}"></h:outputText>
+				</p:column>
+				
+                <p:column style="width: 20px;">
+                    <p:button outcome="viewMovie" value="Edit">
+                        <f:param name="movieId" value="#{movie.id}" />
+                    </p:button>
+				</p:column>
+				
+                <f:facet name="footer">
+                    <p:commandButton oncomplete="detailsDialog.show()" value="View" update=":detailsTable" process="@form"/>
+                </f:facet>
+                
+			</p:dataTable>
+			
+			Export Data
+			
+			<br />
+			
+			<h:commandLink>
+				<h:graphicImage value="img/excel.png" style="border:0"/>
+				<p:dataExporter type="xls" target="movies" fileName="movies" excludeColumns="3"/>
+			</h:commandLink>
+			
+			<h:commandLink>
+				<h:graphicImage value="img/pdf.png" style="border:0"/>
+				<p:dataExporter type="pdf" target="movies" fileName="movies" excludeColumns="3"/>
+			</h:commandLink>
+            
+		</h:form>
+		
+        <p:dialog header="Movie Details" widgetVar="detailsDialog">
+            <p:dataList id="detailsTable" type="ordered" value="#{manageMovies.selectedMovies}" var="movie" >
+                
+                <p:column>
+                    <h:outputText value="Title : " />
+                    <h:outputText value="#{movie.title}" />
+
+                    <h:outputText value=", Format : " />
+                    <h:outputText value="#{movie.format}" />
+
+                    <h:outputText value=", Discs : " />
+                    <h:outputText value="#{movie.discs}" />
+
+                    <h:outputText value=", Description : " />
+                    <h:outputText value="#{movie.description}" />
+                </p:column>
+                
+            </p:dataList>
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>
